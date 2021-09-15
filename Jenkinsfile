@@ -30,12 +30,12 @@ pipeline {
              }
         }
 
-          stage('Publish IIS Local'){
+         stage('Publish IIS Local'){
              steps{
-               bat 'dotnet publish WebApi/WebApi.csproj -o C:\inetpub\wwwroot --configuration Release --no-restore'
+               bat 'dotnet publish WebApi/WebApi.csproj -o C:\\inetpub\\wwwroot\\webAPI --configuration Release --no-restore'
              }
-        }      
+        }
 
-               
+
     }
 }
