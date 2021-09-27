@@ -19,11 +19,11 @@ pipeline {
                sh 'dotnet build WebApi.sln --configuration Release --no-restore'
             }
          }
-      //   stage('Test: Unit Test'){
-      //      steps {
-      //           sh 'dotnet test NUnitTest/NUnitTest.csproj --configuration Release --no-restore'
-      //        }
-      //     }
+        stage('Test: Unit Test'){
+           steps {
+                sh 'dotnet test NUnitTest/NUnitTest.csproj --configuration Release --no-restore'
+             }
+          }
         stage('Publish'){
              steps{
                sh 'dotnet publish WebApi/WebApi.csproj --configuration Release --no-restore'
