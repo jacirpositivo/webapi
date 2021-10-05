@@ -76,6 +76,7 @@
 
     post { 
          always { 
+             script {
                   def mailRecipients = 'jkravetz@positivo.com.br'
                   def jobName = currentBuild.fullDisplayName
                   emailext body: '''${SCRIPT, template="groovy-html.template"}''',
@@ -84,12 +85,9 @@
                   to: "${mailRecipients}",
                   replyTo: "${mailRecipients}",
                   recipientProviders: [[$class: 'CulpritsRecipientProvider']]
-     
+             }
          }
       }
-
-
-
 }
 
 //   def isOnWindows(){
