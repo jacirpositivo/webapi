@@ -1,8 +1,21 @@
+def getOs(){
+    String osname = System.getProperty('os.name');
+    if (osname.startsWith('Windows'))
+        return 'windows';
+    else if (osname.startsWith('Mac'))
+        return 'macosx';
+    else if (osname.contains('nux'))
+        return 'linux';
+    else
+        throw new Exception("Unsupported os: ${osname}");
+}
+
+
 pipeline {   
     agent any
 
-if (isUnix()) {
-    stages {
+    if (getOs() =="linux") {
+   stages {
         stage('Restore packages'){
            steps{
                sh 'dotnet restore WebApi.sln'
@@ -64,39 +77,7 @@ if (isUnix()) {
 
     }
 } else {
-    stages {
-        stage('Restore packages'){
-           steps{
-               bat 'dotnet restore WebApi.sln'
-            }
-         }        
-        stage('Clean'){
-           steps{
-               bat 'dotnet clean WebApi.sln --configuration Release'
-            }
-         }
-        stage('Build'){
-           steps{
-               bat 'dotnet build WebApi.sln --configuration Release --no-restore'
-            }
-         }
-        stage('Test: Unit Test'){
-           steps {
-                bat 'dotnet test NUnitTest/NUnitTest.csproj --configuration Release --no-restore'
-             }
-          }
-        stage('Publish'){
-             steps{
-               bat 'dotnet publish WebApi/WebApi.csproj --configuration Release --no-restore'
-             }
-        }
-
-         stage('Publish IIS Local'){
-             steps{
-               bat 'dotnet publish WebApi/WebApi.csproj -o C:\\inetpub\\wwwroot\\webAPI --configuration Release --no-restore'
-             }
-        }
-    }
+    onElse
 }
 
     
