@@ -1,21 +1,9 @@
-def getOs(){
-    String osname = System.getProperty('os.name');
-    if (osname.startsWith('Windows'))
-        return 'windows';
-    else if (osname.startsWith('Mac'))
-        return 'macosx';
-    else if (osname.contains('nux'))
-        return 'linux';
-    else
-        throw new Exception("Unsupported os: ${osname}");
-}
-
-
 pipeline {   
     agent any
-
-    if (getOs() =="linux") {
-   stages {
+   //   triggers {
+   //      githubPush()
+   //    }
+    stages {
         stage('Restore packages'){
            steps{
                sh 'dotnet restore WebApi.sln'
@@ -66,19 +54,11 @@ pipeline {
                   sh 'ssh user@server “rm -rf /var/www/example.com/dist/ && mv /var/www/temp_deploy/dist/ /var/www/example.com/”'
                   }
          }
-      
 
-      //    stage('Publish IIS Local'){
-      //        steps{
-      //          sh 'dotnet publish WebApi/WebApi.csproj -o C:\\inetpub\\wwwroot\\webAPI --configuration Release --no-restore'
-      //        }
-      //   }
-
-
+         stage('Publish IIS Local'){
+             steps{
+               sh 'dotnet publish WebApi/WebApi.csproj -o C:\\inetpub\\wwwroot\\webAPI --configuration Release --no-restore'
+             }
+        }
     }
-} else {
-    onElse
-}
-
-    
 }
