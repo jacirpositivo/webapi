@@ -80,7 +80,7 @@
                   def mailRecipients = 'jkravetz@positivo.com.br'
                   def jobName = currentBuild.fullDisplayName
                   //emailext body: '''${SCRIPT, template="groovy-html.template"}''',
-                  emailext body: '''${SCRIPT, template="jenkins-generic-matrix-email-html.template"}''',
+                  emailext body: '''${SCRIPT, template="groovy-html.template"}''',
                   mimeType: 'text/html',
                   subject: "[Jenkins] ${jobName}",
                   to: "${mailRecipients}",
@@ -92,7 +92,7 @@
              script {
                   def mailRecipients = 'jkravetz@positivo.com.br'
                   def jobName = currentBuild.fullDisplayName
-                  emailext body: '''${SCRIPT, template="groovy-text.template"}''',
+                  emailext body: '''${SCRIPT, template="email-failure.template"}''',
                   mimeType: 'text/html',
                   subject: "[Jenkins] ${jobName}",
                   to: "${mailRecipients}",
@@ -100,7 +100,44 @@
                   recipientProviders: [[$class: 'CulpritsRecipientProvider']]
              }
          }
-         
+         unstable { 
+             script {
+                  def mailRecipients = 'jkravetz@positivo.com.br'
+                  def jobName = currentBuild.fullDisplayName
+                  emailext body: '''${SCRIPT, template="email-unstable-html.template"}''',
+                  mimeType: 'text/html',
+                  subject: "[Jenkins] ${jobName}",
+                  to: "${mailRecipients}",
+                  replyTo: "${mailRecipients}",
+                  recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+             }
+         }
+          changed { 
+             script {
+                  def mailRecipients = 'jkravetz@positivo.com.br'
+                  def jobName = currentBuild.fullDisplayName
+                  emailext body: '''${SCRIPT, template="email-changed-html.template"}''',
+                  mimeType: 'text/html',
+                  subject: "[Jenkins] ${jobName}",
+                  to: "${mailRecipients}",
+                  replyTo: "${mailRecipients}",
+                  recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+             }
+         }
+
+          success { 
+             script {
+                  def mailRecipients = 'jkravetz@positivo.com.br'
+                  def jobName = currentBuild.fullDisplayName
+                  emailext body: '''${SCRIPT, template="email-success-html.template"}''',
+                  mimeType: 'text/html',
+                  subject: "[Jenkins] ${jobName}",
+                  to: "${mailRecipients}",
+                  replyTo: "${mailRecipients}",
+                  recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+             }
+         }
+
       }
 
       
