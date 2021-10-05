@@ -35,7 +35,5 @@ pipeline {
                bat 'dotnet publish WebApi/WebApi.csproj -o C:\\inetpub\\wwwroot\\webAPI --configuration Release --no-restore'
              }
         }
-
-
     }
 }
