@@ -1,8 +1,5 @@
 pipeline {   
     agent any
-   //   triggers {
-   //      githubPush()
-   //    }
     stages {
         stage('Restore packages'){
            steps{
@@ -24,13 +21,11 @@ pipeline {
                 sh 'dotnet test NUnitTest/NUnitTest.csproj --configuration Release --no-restore'
              }
           }
-
         stage('Publish'){
              steps{
                sh 'dotnet publish WebApi/WebApi.csproj --configuration Release --no-restore'
              }
         }
-
          stage('Email') {
                   steps {
                      script {
@@ -45,22 +40,21 @@ pipeline {
                      }
                   }
                }
-        stage ('Deploy') {
-             steps{
-                  sh 'ssh user@server rm -rf /var/www/temp_deploy/dist/'
-                  sh 'ssh user@server mkdir -p /var/www/temp_deploy'
-                  sh 'scp -r dist user@server:/var/www/temp_deploy/dist/'
-                  sh 'ssh user@server “rm -rf /var/www/example.com/dist/ && mv /var/www/temp_deploy/dist/ /var/www/example.com/”'
-                  }
-         }
 
-         stage('Publish IIS Local'){
-             steps{
-               sh 'dotnet publish WebApi/WebApi.csproj -o C:\\inetpub\\wwwroot\\webAPI --configuration Release --no-restore'
-             }
-        }
+      //   stage ('Deploy') {
+      //        steps{
+      //             sh 'ssh user@server rm -rf /var/www/temp_deploy/dist/'
+      //             sh 'ssh user@server mkdir -p /var/www/temp_deploy'
+      //             sh 'scp -r dist user@server:/var/www/temp_deploy/dist/'
+      //             sh 'ssh user@server “rm -rf /var/www/example.com/dist/ && mv /var/www/temp_deploy/dist/ /var/www/example.com/”'
+      //             }
+      //    }
 
-        
+      //    stage('Publish IIS Local'){
+      //        steps{
+      //          sh 'dotnet publish WebApi/WebApi.csproj -o C:\\inetpub\\wwwroot\\webAPI --configuration Release --no-restore'
+      //        }
+      //   }       
 
     }
 }
