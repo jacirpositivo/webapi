@@ -16,15 +16,6 @@
     return false
  }
 
-if (isOnWindows()) {
-     stages {
-        stage('Restore packages'){
-           steps{
-               sh 'dotnet restore WebApi.sln'
-            }
-         }        
-      }        
-} else {
     stages {
         stage('Restore packages'){
            steps{
@@ -111,4 +102,3 @@ if (isOnWindows()) {
 }
 
     
-}
