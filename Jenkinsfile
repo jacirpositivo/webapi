@@ -79,14 +79,15 @@
              script {
                   def mailRecipients = 'jkravetz@positivo.com.br'
                   def jobName = currentBuild.fullDisplayName
-                  emailext body: '''${SCRIPT, template="groovy-html.template"}''',
+                  //emailext body: '''${SCRIPT, template="groovy-html.template"}''',
+                  emailext body: '''${SCRIPT, template="jenkins-generic-matrix-email-html.template"}''',
                   mimeType: 'text/html',
                   subject: "[Jenkins] ${jobName}",
                   to: "${mailRecipients}",
                   replyTo: "${mailRecipients}",
                   recipientProviders: [[$class: 'CulpritsRecipientProvider']]
              }
-         },
+         }
          failure { 
              script {
                   def mailRecipients = 'jkravetz@positivo.com.br'
@@ -99,7 +100,10 @@
                   recipientProviders: [[$class: 'CulpritsRecipientProvider']]
              }
          }
+         
       }
+
+      
 }
 
 //   def isOnWindows(){
