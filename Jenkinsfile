@@ -1,4 +1,10 @@
-def isOnWindows(){
+ pipeline {   
+    agent any
+    parameters {
+        booleanParam(name: "RELEASE", defaultValue: false)
+    }
+
+    def isOnWindows(){
     def os = "windows"
     def List nodeLabels  = NODE_LABELS.split()
     for (i = 0; i <nodeLabels.size(); i++) 
@@ -9,14 +15,6 @@ def isOnWindows(){
    }
     return false
  }
-
-
- 
- pipeline {   
-    agent any
-    parameters {
-        booleanParam(name: "RELEASE", defaultValue: false)
-    }
 
 if (isOnWindows()) {
      stages {
