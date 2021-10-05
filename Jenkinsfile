@@ -9,6 +9,8 @@ def isOnWindows(){
    }
     return false
  }
+
+
  
  pipeline {   
     agent any
@@ -16,6 +18,15 @@ def isOnWindows(){
         booleanParam(name: "RELEASE", defaultValue: false)
     }
 
+if (isOnWindows()) {
+     stages {
+        stage('Restore packages'){
+           steps{
+               sh 'dotnet restore WebApi.sln'
+            }
+         }        
+      }        
+} else {
     stages {
         stage('Restore packages'){
            steps{
@@ -99,4 +110,7 @@ def isOnWindows(){
       //   }       
 
     }
+}
+
+    
 }
