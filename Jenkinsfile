@@ -33,14 +33,21 @@
          stage('Email') {
                   steps {
                      script {
-                           def mailRecipients = 'jkravetz@positivo.com.br'
-                           def jobName = currentBuild.fullDisplayName
-                           emailext body: '''${SCRIPT, template="groovy-html.template"}''',
-                           mimeType: 'text/html',
-                           subject: "[Jenkins] ${jobName}",
-                           to: "${mailRecipients}",
-                           replyTo: "${mailRecipients}",
-                           recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+
+                           if (isUnix()) {
+                                 def mailRecipients = 'jkravetz@positivo.com.br'
+                                 def jobName = currentBuild.fullDisplayName
+                                 emailext body: '''${SCRIPT, template="groovy-html.template"}''',
+                                 mimeType: 'text/html',
+                                 subject: "[Jenkins] ${jobName}",
+                                 to: "${mailRecipients}",
+                                 replyTo: "${mailRecipients}",
+                                 recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+                           } else {
+                                bat 'dir'
+                           }
+
+                           
                      }
                   }
                }
@@ -89,14 +96,14 @@
     }
 }
 
-  def isOnWindows(){
-    def os = "windows"
-    def List nodeLabels  = NODE_LABELS.split()
-    for (i = 0; i <nodeLabels.size(); i++) 
-    {
-        if (nodeLabels[i]==os){
-        return true
-        }
-   }
-    return false
- }
+//   def isOnWindows(){
+//     def os = "windows"
+//     def List nodeLabels  = NODE_LABELS.split()
+//     for (i = 0; i <nodeLabels.size(); i++) 
+//     {
+//         if (nodeLabels[i]==os){
+//         return true
+//         }
+//    }
+//     return false
+//  }
