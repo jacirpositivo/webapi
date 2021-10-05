@@ -86,6 +86,18 @@
                   replyTo: "${mailRecipients}",
                   recipientProviders: [[$class: 'CulpritsRecipientProvider']]
              }
+         },
+         failure { 
+             script {
+                  def mailRecipients = 'jkravetz@positivo.com.br'
+                  def jobName = currentBuild.fullDisplayName
+                  emailext body: '''${SCRIPT, template="groovy-text.template"}''',
+                  mimeType: 'text/html',
+                  subject: "[Jenkins] ${jobName}",
+                  to: "${mailRecipients}",
+                  replyTo: "${mailRecipients}",
+                  recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+             }
          }
       }
 }
