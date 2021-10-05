@@ -31,6 +31,20 @@ pipeline {
              }
         }
 
+         stage('Email') {
+                  steps {
+                     script {
+                           def mailRecipients = 'jkravetz@positivo.com.br'
+                           def jobName = currentBuild.fullDisplayName
+                           emailext body: '''${SCRIPT, template="groovy-html.template"}''',
+                           mimeType: 'text/html',
+                           subject: "[Jenkins] ${jobName}",
+                           to: "${mailRecipients}",
+                           replyTo: "${mailRecipients}",
+                           recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+                     }
+                  }
+               }
         stage ('Deploy') {
              steps{
                   sh 'ssh user@server rm -rf /var/www/temp_deploy/dist/'
@@ -46,20 +60,7 @@ pipeline {
              }
         }
 
-        stage('Email') {
-         steps {
-            script {
-                  def mailRecipients = 'jkravetz@positivo.com.br'
-                  def jobName = currentBuild.fullDisplayName
-                  emailext body: '''${SCRIPT, template="groovy-html.template"}''',
-                  mimeType: 'text/html',
-                  subject: "[Jenkins] ${jobName}",
-                  to: "${mailRecipients}",
-                  replyTo: "${mailRecipients}",
-                  recipientProviders: [[$class: 'CulpritsRecipientProvider']]
-            }
-         }
-      }
-      
+        
+
     }
 }
