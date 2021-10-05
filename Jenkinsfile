@@ -30,28 +30,7 @@
                sh 'dotnet publish WebApi/WebApi.csproj --configuration Release --no-restore'
              }
         }
-         stage('Email') {
-                  steps {
-                     script {
-
-                           if (isUnix()) {
-                                 def mailRecipients = 'jkravetz@positivo.com.br'
-                                 def jobName = currentBuild.fullDisplayName
-                                 emailext body: '''${SCRIPT, template="groovy-html.template"}''',
-                                 mimeType: 'text/html',
-                                 subject: "[Jenkins] ${jobName}",
-                                 to: "${mailRecipients}",
-                                 replyTo: "${mailRecipients}",
-                                 recipientProviders: [[$class: 'CulpritsRecipientProvider']]
-                           } else {
-                                bat 'dir'
-                           }
-
-                           
-                     }
-                  }
-               }
-
+       
       //    stage("Publish") {
       //       steps {
       //           script {
@@ -94,6 +73,23 @@
       //   }       
 
     }
+
+    post { 
+         always { 
+                  def mailRecipients = 'jkravetz@positivo.com.br'
+                  def jobName = currentBuild.fullDisplayName
+                  emailext body: '''${SCRIPT, template="groovy-html.template"}''',
+                  mimeType: 'text/html',
+                  subject: "[Jenkins] ${jobName}",
+                  to: "${mailRecipients}",
+                  replyTo: "${mailRecipients}",
+                  recipientProviders: [[$class: 'CulpritsRecipientProvider']]
+     
+         }
+      }
+
+
+
 }
 
 //   def isOnWindows(){
